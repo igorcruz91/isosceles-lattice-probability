@@ -1,0 +1,286 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{theorem*}{Theorem}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\G}{\mathcal{G}}
+\DeclareMathOperator{\Area}{Area}
+
+\title{Exact probability that three random points of a $10\times 10$ grid\\
+form an isosceles triangle}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Three distinct points are drawn uniformly at random from the $10\times10$ integer
+grid $\G=\{0,\dots,9\}^2$; collinear draws are discarded and redrawn. We show
+that the probability of obtaining an isosceles triangle is exactly
+\[
+  p_{10} \;=\; \frac{11\,284}{157\,252} \;=\; \frac{2821}{39\,313} \;\approx\; 0.0717574,
+\]
+and compare it with a Monte Carlo experiment of $10^{4}$ games of $10^{6}$ rounds each.
+\end{abstract}
+
+\section{Setup}
+
+Let $\G=\{0,1,\dots,9\}^2$, so $|\G|=100$. A round draws an unordered triple
+$\{A,B,C\}$ of distinct points of $\G$ uniformly at random; if $A,B,C$ are
+collinear the triple is discarded and redrawn. Hence every non-degenerate
+triangle with vertices in $\G$ is equally likely and
+\begin{equation}\label{eq:p}
+  p_{10} \;=\; \frac{I}{T-L},
+\end{equation}
+where
+\begin{itemize}
+  \item $T$ is the number of unordered triples of distinct points,
+  \item $L$ is the number of collinear triples,
+  \item $I$ is the number of non-degenerate isosceles triangles (at least two equal sides).
+\end{itemize}
+Throughout, $d(P,Q)=(P_x-Q_x)^2+(P_y-Q_y)^2\in\mathbb{Z}$ denotes the \emph{squared}
+distance; two sides are equal iff their squared lengths are equal integers, so
+every comparison is exact.
+
+\section{Two preliminary facts}
+
+\begin{lemma}[No lattice equilateral triangle]\label{lem:equi}
+No equilateral triangle has all three vertices in $\mathbb{Z}^2$.
+\end{lemma}
+\begin{proof}
+By the shoelace formula a lattice triangle has area
+$\tfrac12\,\lvert (B-A)\times(C-A)\rvert\in\tfrac12\mathbb{Z}$, a rational number.
+An equilateral triangle of side $s$ has area $\tfrac{\sqrt3}{4}s^2$; for a
+lattice triangle $s^2=d(A,B)$ is a positive integer, so the area is irrational.
+Contradiction.
+\end{proof}
+
+\begin{lemma}[Unique apex]\label{lem:apex}
+Every non-degenerate isosceles triangle with vertices in $\G$ has exactly one
+\emph{apex}, i.e.\ exactly one vertex $A$ with $d(A,B)=d(A,C)$ for the other two
+vertices $B,C$.
+\end{lemma}
+\begin{proof}
+At least one apex exists by definition. If two vertices were apices, all three
+sides would be equal, contradicting Lemma~\ref{lem:equi}.
+\end{proof}
+
+\section{The total number of triples}
+\[
+  T=\binom{100}{3}=161\,700 .
+\]
+
+\section{Collinear triples: $L=4448$}
+
+Every collinear triple consists of two \emph{outer} points $P,Q$ and one point
+strictly between them, and it is determined uniquely by this data. If
+$Q-P=(\Delta x,\Delta y)$, the segment $PQ$ contains exactly
+$\gcd(|\Delta x|,|\Delta y|)-1$ lattice points in its interior. A displacement
+$(\Delta x,\Delta y)$ with $\Delta x,\Delta y\ge 0$ can be placed in
+$(10-\Delta x)(10-\Delta y)$ ways inside $\G$. Therefore
+\[
+  L=\sum_{(\Delta x,\Delta y)} c(\Delta x,\Delta y)\,(10-\Delta x)(10-\Delta y)\,
+     \bigl(\gcd(\Delta x,\Delta y)-1\bigr),
+\]
+summed over $0\le\Delta x,\Delta y\le 9$, not both zero, where $c=2$ when both
+$\Delta x,\Delta y>0$ (the segment may have positive or negative slope) and $c=1$
+otherwise.
+
+\paragraph{Horizontal and vertical lines.} Each of the $10$ rows contains
+$\binom{10}{3}=120$ collinear triples, and so does each column:
+\[
+  L_{\text{axis}} = 2\cdot 10\cdot 120 = 2400 .
+\]
+
+\paragraph{Oblique lines.} Only displacements with $g=\gcd(a,b)\ge2$ contribute.
+Writing them as $\{a,b\}$ with $1\le a\le b\le 9$ and
+$w=(10-a)(10-b)(g-1)$, each unordered $\{a,b\}$ with $a\neq b$ appears twice
+($(a,b)$ and $(b,a)$):
+
+\begin{center}
+\begin{tabular}{cccc@{\qquad}cccc}
+\toprule
+$\{a,b\}$ & $g$ & $w$ & contribution & $\{a,b\}$ & $g$ & $w$ & contribution\\
+\midrule
+$\{2,2\}$ & 2 & 64 & 64  & $\{4,6\}$ & 2 & 24 & 48 \\
+$\{2,4\}$ & 2 & 48 & 96  & $\{4,8\}$ & 4 & 36 & 72 \\
+$\{2,6\}$ & 2 & 32 & 64  & $\{5,5\}$ & 5 & 100 & 100 \\
+$\{2,8\}$ & 2 & 16 & 32  & $\{6,6\}$ & 6 & 80 & 80 \\
+$\{3,3\}$ & 3 & 98 & 98  & $\{6,8\}$ & 2 & 8 & 16 \\
+$\{3,6\}$ & 3 & 56 & 112 & $\{6,9\}$ & 3 & 8 & 16 \\
+$\{3,9\}$ & 3 & 14 & 28  & $\{7,7\}$ & 7 & 54 & 54 \\
+$\{4,4\}$ & 4 & 108 & 108 & $\{8,8\}$ & 8 & 28 & 28 \\
+          &   &    &      & $\{9,9\}$ & 9 & 8 & 8 \\
+\midrule
+\multicolumn{8}{r}{total over one slope sign: $1024$}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+With both slope signs, $L_{\text{oblique}}=2\cdot1024=2048$, hence
+\[
+  L = 2400+2048 = 4448,
+  \qquad
+  T-L = 161\,700-4448 = 157\,252 \text{ non-degenerate triangles.}
+\]
+
+\section{Isosceles triangles: $I=11\,284$}
+
+\subsection{Counting by the apex}
+
+For a point $A\in\G$ and an integer $r\ge1$ let
+\[
+  k_A(r)=\#\{P\in\G : d(A,P)=r\}
+\]
+be the number of grid points on the circle of squared radius $r$ about $A$.
+Define
+\[
+  S_A=\sum_{r\ge1}\binom{k_A(r)}{2},
+\]
+the number of unordered pairs $\{B,C\}$ of distinct points equidistant from $A$.
+Some of these pairs are collinear with $A$: if $d(A,B)=d(A,C)$ and $A,B,C$ are
+collinear with $B\ne C$, then $A$ is the midpoint of $BC$, i.e.\ $C=2A-B$. Let $M_A$
+be the number of such pairs. By Lemma~\ref{lem:apex}, every isosceles triangle is
+counted exactly once, at its apex, by $S_A-M_A$, so
+\begin{equation}\label{eq:I}
+  I=\sum_{A\in\G}\bigl(S_A-M_A\bigr)=S-M .
+\end{equation}
+
+\subsection{The midpoint term $M=1200$}
+
+For $A=(x,y)$ put $m_x=\min(x,9-x)$ and $m_y=\min(y,9-y)$. The points $B$ with both
+$B$ and $2A-B$ in $\G$ form the box $[x-m_x,x+m_x]\times[y-m_y,y+m_y]$, so
+\[
+  M_A=\frac{(2m_x+1)(2m_y+1)-1}{2}.
+\]
+As $x$ runs over $0,\dots,9$ the values $2m_x+1$ are $1,3,5,7,9,9,7,5,3,1$, with sum
+$50$. Hence
+\[
+  M=\sum_{A}M_A=\frac{50\cdot50-100}{2}=1200 .
+\]
+
+\subsection{The equidistant-pair term $S=12\,484$}
+
+The symmetry group of the square (rotations by multiples of $90^\circ$ and the
+four reflections, $8$ elements) maps $\G$ onto itself and preserves squared
+distances, so $S_A$ and $M_A$ are constant on its orbits. Each orbit has a unique
+representative $(x,y)$ with $0\le x\le y\le 4$, giving $15$ classes: those with
+$x=y$ have $4$ elements, the others $8$.
+
+\paragraph{Worked example: the corner $A=(0,0)$.} The other points are $(a,b)$ with
+$0\le a,b\le 9$, at squared distance $a^2+b^2$. Points $(a,b)$ and $(b,a)$ with
+$a\neq b$ are always equidistant from $A$, giving $\binom{10}{2}=45$ pairs. The
+remaining pairs come from the squared distances that have \emph{two essentially
+different} representations as a sum of two squares inside the grid:
+\[
+\begin{array}{lll}
+  25=0^2+5^2=3^2+4^2: & k=4, & \binom42-2=4 \text{ extra pairs},\\
+  50=1^2+7^2=5^2+5^2: & k=3, & \binom32-1=2 \text{ extra pairs},\\
+  65=1^2+8^2=4^2+7^2: & k=4, & 4 \text{ extra pairs},\\
+  85=2^2+9^2=6^2+7^2: & k=4, & 4 \text{ extra pairs}.
+\end{array}
+\]
+($100=6^2+8^2=0^2+10^2$ and $130=7^2+9^2=3^2+11^2$ have their second
+representation outside the grid.) Hence $S_{(0,0)}=45+4+2+4+4=59$, while
+$M_{(0,0)}=0$: a corner is never a midpoint.
+
+\paragraph{All classes.} The same computation of $\sum_r\binom{k_A(r)}{2}$ for each
+representative gives:
+
+\begin{center}
+\begin{tabular}{ccrrrr}
+\toprule
+apex $(x,y)$ & orbit size & $S_A$ & $M_A$ & $S_A-M_A$ & orbit total \\
+\midrule
+$(0,0)$ & 4 &  59 &  0 &  59 &  236 \\
+$(0,1)$ & 8 &  69 &  1 &  68 &  544 \\
+$(0,2)$ & 8 &  78 &  2 &  76 &  608 \\
+$(0,3)$ & 8 &  84 &  3 &  81 &  648 \\
+$(0,4)$ & 8 &  95 &  4 &  91 &  728 \\
+$(1,1)$ & 4 &  98 &  4 &  94 &  376 \\
+$(1,2)$ & 8 & 105 &  7 &  98 &  784 \\
+$(1,3)$ & 8 & 114 & 10 & 104 &  832 \\
+$(1,4)$ & 8 & 129 & 13 & 116 &  928 \\
+$(2,2)$ & 4 & 135 & 12 & 123 &  492 \\
+$(2,3)$ & 8 & 148 & 17 & 131 & 1048 \\
+$(2,4)$ & 8 & 163 & 22 & 141 & 1128 \\
+$(3,3)$ & 4 & 188 & 24 & 164 &  656 \\
+$(3,4)$ & 8 & 207 & 31 & 176 & 1408 \\
+$(4,4)$ & 4 & 257 & 40 & 217 &  868 \\
+\midrule
+total   & 100 & $S=12\,484$ & $M=1200$ & & $I=11\,284$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $S_A$ column weighted by orbit sizes sums to $S=12\,484$, the $M_A$ column to
+$M=1200$ (agreeing with the closed form above), and by \eqref{eq:I}
+\[
+  I = 12\,484-1200 = 11\,284 .
+\]
+Points near the centre are apices of many more isosceles triangles ($217$ for
+$(4,4)$) than the corners ($59$), because more circles around them stay inside
+the grid.
+
+\section{Result}
+
+\begin{theorem*}
+For three distinct uniformly random points of the $10\times10$ grid, conditioned on
+not being collinear,
+\[
+  \Pr[\text{isosceles}]
+  =\frac{I}{T-L}
+  =\frac{11\,284}{157\,252}
+  =\frac{2821}{39\,313}
+  \approx 0.07175743 .
+\]
+\end{theorem*}
+
+The fraction is in lowest terms: $11\,284=4\cdot2821$, $157\,252=4\cdot39\,313$,
+$2821=7\cdot13\cdot31$, and none of $7,13,31$ divides $39\,313$.
+
+\begin{remark}
+If collinear draws are \emph{not} redrawn but counted as non-isosceles rounds, the
+probability becomes $I/T=11\,284/161\,700\approx0.06978$.
+\end{remark}
+
+\section{Comparison with the simulation}
+
+The Monte Carlo experiment ran $N_g=10^4$ independent games of $n=10^6$ rounds
+each, with the same rules (collinear draws redrawn). Each game's estimate $\hat
+p_j$ is a binomial proportion, so it should be approximately normal with mean
+$p_{10}$ and standard deviation
+\[
+  \sqrt{\frac{p_{10}(1-p_{10})}{n}}\approx 2.58\times10^{-4}.
+\]
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+exact value $p_{10}$ & $0.0717574$ \\
+mean of the $10^4$ game estimates & $0.0717576$ \\
+standard error of that mean & $0.0000025$ \\
+standard deviation across games (observed) & $2.54\times10^{-4}$ \\
+standard deviation across games (binomial theory) & $2.58\times10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The simulated mean lies $0.06$ standard errors from the exact value, and the
+spread across games matches the binomial prediction.
+
+\paragraph{Independent check.} Enumerating all $161\,700$ triples by computer and
+classifying each with exact integer arithmetic gives the same counts
+$L=4448$ and $I=11\,284$.
+
+\end{document}

@@ -1,0 +1,9 @@
+streamlit>=1.38
+numpy>=1.26
+plotly>=5.22
+seaborn>=0.13
+matplotlib>=3.8
+pytest>=8.0
+black>=24.0
+flake8>=7.0
+manimgx>=0.1.1; python_version >= "3.13"
