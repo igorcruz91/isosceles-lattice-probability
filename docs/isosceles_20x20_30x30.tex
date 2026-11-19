@@ -1,0 +1,660 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem*{theorem*}{Theorem}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\G}{\mathcal{G}}
+
+\title{Exact probability that three random points of a $20\times 20$ and a
+$30\times30$ grid form an isosceles triangle,\\ and comparison with the
+$10\times10$ grid}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Three distinct points are drawn uniformly at random from the $n\times n$ integer
+grid $\G_n=\{0,\dots,n-1\}^2$; collinear draws are discarded and redrawn.
+Applying the method of the companion note \texttt{isosceles\_10x10.tex} to
+$n=20$ and $n=30$ we obtain the exact values
+\[
+  p_{20}=\frac{248\,292}{10\,482\,124}=\frac{62\,073}{2\,620\,531}\approx0.0236872,
+  \qquad
+  p_{30}=\frac{1\,460\,408}{120\,464\,616}=\frac{7937}{654\,699}\approx0.0121231,
+\]
+to be compared with $p_{10}=2821/39\,313\approx0.0717574$. Doubling the side of the
+grid divides the probability by about $3$, and tripling it by about $6$: the
+probability decays roughly like $(\ln n)/n^2$. For a general $n\times n$ grid we
+give an exact finite-sum formula for the number of isosceles triangles, and
+derive the leading asymptotic behaviour
+\[
+  p_n\sim\Bigl(\frac{24}{\pi^2}+\frac4\pi\Bigr)\frac{\ln n}{n^2}
+  \approx3.705\,\frac{\ln n}{n^2}.
+\]
+Both values agree with Monte Carlo
+experiments of $10^4$ games of $10^6$ rounds each, and with a brute-force
+enumeration of all triples.
+\end{abstract}
+
+\section{Setup and method}
+
+Everything in this section is proved in the $10\times10$ note for that grid; the
+arguments do not use the value $n=10$, so we only recall the statements for a
+general $n\times n$ grid $\G_n$ with $|\G_n|=n^2$ points.
+
+Every non-degenerate triangle with vertices in $\G_n$ is equally likely, so
+\begin{equation}\label{eq:p}
+  p_n=\frac{I_n}{T_n-L_n},
+\end{equation}
+where $T_n=\binom{n^2}{3}$ is the number of unordered triples of distinct points,
+$L_n$ the number of collinear triples and $I_n$ the number of non-degenerate
+isosceles triangles. As before, $d(P,Q)=(P_x-Q_x)^2+(P_y-Q_y)^2$ is the squared
+distance, so all comparisons are between integers.
+
+\paragraph{Collinear triples.} A collinear triple is determined by its two outer
+points and the middle one; a displacement $(\Delta x,\Delta y)$ can be placed in
+$(n-\Delta x)(n-\Delta y)$ ways and has $\gcd(\Delta x,\Delta y)-1$ interior lattice
+points, hence
+\begin{equation}\label{eq:L}
+  L_n=\underbrace{2n\binom{n}{3}}_{\text{rows and columns}}
+  \;+\;2\!\!\sum_{1\le a,b\le n-1}\!\!(n-a)(n-b)\bigl(\gcd(a,b)-1\bigr),
+\end{equation}
+the factor $2$ in the second term accounting for the two slope signs.
+
+\paragraph{Isosceles triangles.} No lattice triangle is equilateral, so every
+isosceles triangle has a unique apex. With $k_A(r)$ the number of grid points at
+squared distance $r$ from $A$,
+\begin{equation}\label{eq:I}
+  I_n=S_n-M_n,\qquad
+  S_n=\sum_{A\in\G_n}S_A,\quad S_A=\sum_{r\ge1}\binom{k_A(r)}{2},\qquad
+  M_n=\sum_{A\in\G_n}M_A,
+\end{equation}
+where $M_A$ counts the pairs $\{B,2A-B\}$ in $\G_n$, i.e.\ the collinear
+``isosceles'' configurations in which $A$ is the midpoint of the base. With
+$m_x=\min(x,n-1-x)$, $m_y=\min(y,n-1-y)$,
+\[
+  M_{(x,y)}=\frac{(2m_x+1)(2m_y+1)-1}{2}.
+\]
+For even $n$ the values $2m_x+1$ are $1,3,\dots,n-1,n-1,\dots,3,1$, whose sum is
+$n^2/2$, so
+\begin{equation}\label{eq:M}
+  M_n=\frac{(n^2/2)^2-n^2}{2}=\frac{n^2(n^2-4)}{8}.
+\end{equation}
+(For $n=10$ this gives $1200$, as in the companion note.) Finally $S_A$ and $M_A$
+are invariant under the $8$ symmetries of the square, so it suffices to compute
+them for the representatives $0\le x\le y\le n/2-1$; a class with $x=y$ has $4$
+elements, any other class $8$.
+
+\section{The $20\times20$ grid}
+
+\subsection{Total and collinear triples}
+\[
+  T_{20}=\binom{400}{3}=10\,586\,800.
+\]
+Rows and columns contribute $2\cdot20\cdot\binom{20}{3}=2\cdot20\cdot1140=45\,600$
+collinear triples. For the oblique ones we group the terms of \eqref{eq:L} by
+$g=\gcd(a,b)$; Table~\ref{tab:oblique} lists the contribution of each $g$ for one
+slope sign. Their sum is $29\,538$, so
+\[
+  L_{20}=45\,600+2\cdot29\,538=45\,600+59\,076=104\,676,
+  \qquad
+  T_{20}-L_{20}=10\,482\,124 .
+\]
+
+\subsection{Isosceles triangles}
+
+\paragraph{Midpoint term.} By \eqref{eq:M},
+$M_{20}=\dfrac{400\cdot396}{8}=19\,800$.
+
+\paragraph{Equidistant pairs.} There are $55$ symmetry classes of apices
+(Appendix~\ref{app:20}). As in the $10\times10$ case it is instructive to look at
+the corner $A=(0,0)$. The $\binom{20}{2}=190$ pairs $\{(a,b),(b,a)\}$ with $a\ne b$
+are always equidistant from $A$. All other pairs come from squared radii with
+two or more essentially different representations as a sum of two squares
+inside the grid. In the $10\times10$ grid there were only $4$ such radii
+($25,50,65,85$); in the $20\times20$ grid there are $29$ of them
+($25,50,65,85,100,125,130,145,169,170,\dots$), and some have \emph{three}
+representations, e.g.
+\[
+  325=1^2+18^2=6^2+17^2=10^2+15^2,
+\]
+giving $k_A(325)=6$ points on that circle. Altogether they contribute $118$ extra
+pairs, so
+\[
+  S_{(0,0)}=190+118=308,\qquad M_{(0,0)}=0.
+\]
+At the other extreme, the four central points such as $(9,9)$ have
+$S_A=1379$ and $M_A=180$, hence are apices of $1199$ isosceles triangles,
+$3.9$ times as many as a corner. Summing the table of Appendix~\ref{app:20}
+weighted by orbit sizes,
+\[
+  S_{20}=268\,092,\qquad M_{20}=19\,800,\qquad
+  I_{20}=268\,092-19\,800=248\,292 .
+\]
+
+\subsection{Result}
+\begin{theorem*}
+For three distinct uniformly random points of the $20\times20$ grid, conditioned
+on not being collinear,
+\[
+  p_{20}=\frac{248\,292}{10\,482\,124}=\frac{62\,073}{2\,620\,531}\approx0.02368718 .
+\]
+\end{theorem*}
+Here $\gcd(248\,292,\,10\,482\,124)=4$, $62\,073=3^3\cdot11^2\cdot19$ and
+$2\,620\,531$ is prime, so the fraction is in lowest terms. Without redrawing
+collinear triples the probability would be $I_{20}/T_{20}\approx0.023453$.
+
+\section{The $30\times30$ grid}
+
+\subsection{Total and collinear triples}
+\[
+  T_{30}=\binom{900}{3}=121\,095\,300.
+\]
+Rows and columns contribute $2\cdot30\cdot\binom{30}{3}=2\cdot30\cdot4060=243\,600$.
+The oblique contributions (Table~\ref{tab:oblique}) sum to $193\,542$ per slope
+sign, so
+\[
+  L_{30}=243\,600+2\cdot193\,542=243\,600+387\,084=630\,684,
+  \qquad
+  T_{30}-L_{30}=120\,464\,616 .
+\]
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrr@{\qquad}rrr}
+\toprule
+$g$ & $n=20$ & $n=30$ & $g$ & $n=20$ & $n=30$\\
+\midrule
+ 2 & 5852 & 30\,272 & 16 & 240 & 2940 \\
+ 3 & 4966 & 26\,334 & 17 & 144 & 2704 \\
+ 4 & 3840 & 21\,588 & 18 &  68 & 2448 \\
+ 5 & 3100 & 17\,900 & 19 &  18 & 2178 \\
+ 6 & 2540 & 14\,400 & 20 &     & 1900 \\
+ 7 & 1950 & 12\,570 & 21 &     & 1620 \\
+ 8 & 1680 & 10\,724 & 22 &     & 1344 \\
+ 9 & 1320 &  9144 & 23 &     & 1078 \\
+10 &  900 &  7200 & 24 &     &  828 \\
+11 &  810 &  6650 & 25 &     &  600 \\
+12 &  704 &  5940 & 26 &     &  400 \\
+13 &  588 &  5100 & 27 &     &  234 \\
+14 &  468 &  4160 & 28 &     &  108 \\
+15 &  350 &  3150 & 29 &     &   28 \\
+\midrule
+\multicolumn{6}{r}{total over one slope sign:\quad $n=20$: $29\,538$\qquad
+$n=30$: $193\,542$}\\
+\bottomrule
+\end{tabular}
+\caption{Oblique collinear triples for one slope sign, grouped by
+$g=\gcd(a,b)$: the entry is $\sum_{\gcd(a,b)=g}(n-a)(n-b)(g-1)$ over
+$1\le a,b\le n-1$.}
+\label{tab:oblique}
+\end{table}
+
+\subsection{Isosceles triangles}
+
+\paragraph{Midpoint term.} By \eqref{eq:M},
+$M_{30}=\dfrac{900\cdot896}{8}=100\,800$.
+
+\paragraph{Equidistant pairs.} There are now $120$ symmetry classes
+(Appendix~\ref{app:30}). The corner has $\binom{30}{2}=435$ symmetric pairs plus
+$348$ extra pairs coming from $76$ squared radii with several representations,
+so $S_{(0,0)}=783$. The central points such as $(14,14)$ have $S_A=3585$,
+$M_A=420$, and are apices of $3165$ isosceles triangles, $4.0$ times as many as a
+corner. The weighted sums give
+\[
+  S_{30}=1\,561\,208,\qquad M_{30}=100\,800,\qquad
+  I_{30}=1\,561\,208-100\,800=1\,460\,408 .
+\]
+
+\subsection{Result}
+\begin{theorem*}
+For three distinct uniformly random points of the $30\times30$ grid, conditioned
+on not being collinear,
+\[
+  p_{30}=\frac{1\,460\,408}{120\,464\,616}=\frac{7937}{654\,699}\approx0.01212313 .
+\]
+\end{theorem*}
+Here $\gcd(1\,460\,408,\,120\,464\,616)=184=2^3\cdot23$, $7937$ is prime and
+$654\,699=3\cdot218\,233$ with $218\,233$ prime, so the fraction is in lowest
+terms. Without redrawing collinear triples the probability would be
+$I_{30}/T_{30}\approx0.012060$.
+
+\section{Comparison with the $10\times10$ grid}
+
+\subsection{The numbers side by side}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+ & $10\times10$ & $20\times20$ & $30\times30$ \\
+\midrule
+grid points $n^2$ & $100$ & $400$ & $900$ \\
+triples $T_n$ & $161\,700$ & $10\,586\,800$ & $121\,095\,300$ \\
+collinear triples $L_n$ & $4448$ & $104\,676$ & $630\,684$ \\
+collinear share $L_n/T_n$ & $2.75\%$ & $0.99\%$ & $0.52\%$ \\
+triangles $T_n-L_n$ & $157\,252$ & $10\,482\,124$ & $120\,464\,616$ \\
+equidistant pairs $S_n$ & $12\,484$ & $268\,092$ & $1\,561\,208$ \\
+midpoint pairs $M_n$ & $1200$ & $19\,800$ & $100\,800$ \\
+isosceles triangles $I_n$ & $11\,284$ & $248\,292$ & $1\,460\,408$ \\
+apex classes & $15$ & $55$ & $120$ \\
+corner apex count $S_A-M_A$ & $59$ & $308$ & $783$ \\
+central apex count $S_A-M_A$ & $217$ & $1199$ & $3165$ \\
+\midrule
+$p_n$ (exact) & $\dfrac{2821}{39\,313}$ & $\dfrac{62\,073}{2\,620\,531}$ &
+  $\dfrac{7937}{654\,699}$ \\[2ex]
+$p_n$ (decimal) & $0.0717574$ & $0.0236872$ & $0.0121231$ \\
+about one round in & $13.9$ & $42.2$ & $82.5$ \\
+$p_n/p_{10}$ & $1$ & $0.3301$ & $0.1689$ \\
+$n^2 p_n$ & $7.176$ & $9.475$ & $10.911$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{How the counts grow}
+
+Going from $n=10$ to $n=20$ and $n=30$ multiplies the side by $2$ and $3$. The
+number of triples grows like $n^6/6$: by factors $65.5$ and $749$. The number of
+isosceles triangles grows much more slowly, by factors
+\[
+  \frac{I_{20}}{I_{10}}\approx22.0,\qquad\frac{I_{30}}{I_{10}}\approx129.4,
+\]
+which is a little faster than $n^4$ (factors $16$ and $81$). Consequently the
+probability falls:
+\[
+  \frac{p_{20}}{p_{10}}\approx0.330\approx\frac13,
+  \qquad
+  \frac{p_{30}}{p_{10}}\approx0.169\approx\frac16 .
+\]
+A pure $1/n^2$ law would predict $1/4$ and $1/9$, a $1/n$ law $1/2$ and $1/3$; the
+observed decay lies in between, closer to $1/n^2$, and the slowly increasing
+column $n^2p_n$ ($7.18\to9.47\to10.91$) shows the missing factor is logarithmic.
+
+\subsection{A heuristic for the $(\ln n)/n^2$ decay}
+
+Count isosceles triangles by their \emph{base} $\{B,C\}$ instead of their apex: the
+apex is a lattice point of the perpendicular bisector of $BC$, other than the
+midpoint. Let $v=C-B=(a,b)$ and $g=\gcd(a,b)$. When the bisector contains lattice
+points at all (which happens for a positive proportion of displacements), these
+are spaced $|v|/g$ apart along it, so a bisector crossing the grid contains about
+$n g/|v|$ of them. Each displacement $v$ occurs for about $n^2$ bases, so
+\[
+  I_n\approx c\,n^3\sum_{0<|v|\lesssim n}\frac{\gcd(v)}{|v|}.
+\]
+Writing $v=g u$ with $u$ primitive, and using that a proportion $6/\pi^2$ of the
+lattice vectors are primitive,
+\[
+  \sum_{0<|v|\le R}\frac{\gcd(v)}{|v|}
+  =\sum_{g\le R}\;\sum_{\substack{u\text{ primitive}\\|u|\le R/g}}\frac1{|u|}
+  \approx\sum_{g\le R}\frac{12}{\pi}\cdot\frac Rg
+  \approx\frac{12}{\pi}R\ln R .
+\]
+Hence $I_n$ is of order $n^4\ln n$, and since $T_n-L_n\sim n^6/6$,
+\[
+  p_n\approx C\,\frac{\ln n}{n^2}.
+\]
+The $\ln n$ comes from bases with a large common divisor $g$, whose bisectors are
+densely populated by lattice points. This is only a heuristic (boundary effects
+and the parity condition for the bisector to meet the lattice are absorbed into
+the constants), but it matches the exact values well: computing $p_n$ exactly
+with the same method for all even $n$ from $10$ to $40$ and for $n=50,60$, a
+least-squares fit gives
+\[
+  n^2p_n\approx3.51\ln n-1.00,
+\]
+with maximal error $0.10$ over that range. For the three grids of this note
+it predicts $n^2p_n\approx7.08,\ 9.51,\ 10.93$, against the exact
+$7.18,\ 9.47,\ 10.91$. This fitted slope is still affected by lower-order terms;
+Section~\ref{sec:general} makes the heuristic precise and shows that the true
+asymptotic slope is $24/\pi^2+4/\pi\approx3.705$.
+
+\subsection{Why larger grids favour the centre more}
+
+In all three grids the corners are the least productive apices and the centre
+the most productive, because more circles around a central point stay inside
+the grid. The ratio centre/corner grows slowly: $217/59\approx3.7$,
+$1199/308\approx3.9$, $3165/783\approx4.0$. Larger grids also contain radii with
+more representations as sums of two squares (up to three in the corner of the
+$20\times20$ and $30\times30$ grids, against two in the $10\times10$ grid),
+which adds isosceles triangles that are not mirror images across a diagonal.
+
+\subsection{Collinear triples matter less}
+
+The collinear share $L_n/T_n$ drops from $2.75\%$ to $0.99\%$ and $0.52\%$, so the
+effect of redrawing collinear triples shrinks: the ratio $p_n/(I_n/T_n)=T_n/(T_n-L_n)$
+is $1.028$, $1.010$ and $1.005$ respectively.
+
+\section{The general $n\times n$ grid}\label{sec:general}
+
+\subsection{What has a closed form, and what does not}
+
+Two of the four quantities in \eqref{eq:p}--\eqref{eq:I} are polynomials in $n$:
+\[
+  T_n=\binom{n^2}{3}=\frac{n^2(n^2-1)(n^2-2)}{6},
+  \qquad
+  M_n=\begin{cases}
+    \dfrac{n^2(n^2-4)}{8}, & n \text{ even},\\[1.5ex]
+    \dfrac{(n^2-1)^2}{8}, & n \text{ odd}.
+  \end{cases}
+\]
+(For odd $n$ the values $2m_x+1$ are $1,3,\dots,n-2,n,n-2,\dots,1$, with sum
+$(n^2+1)/2$.) The other two are not. $L_n$ is given exactly by the gcd sum
+\eqref{eq:L}; it is the sequence of collinear triples in an $n\times n$ grid
+(OEIS A000938), it grows like a constant times $n^4\ln n$, and the gcd prevents it
+from collapsing to a polynomial. The isosceles count $I_n$ depends on how many ways
+integers can be written as sums of two squares, as we now show, and therefore also
+has no polynomial or rational closed form. Consequently $p_n$ has no closed form,
+but it has an exact finite-sum formula and a clean asymptotic law.
+
+\subsection{An exact formula for $I_n$}
+
+For integer vectors $u=(u_1,u_2)$ and $w=(w_1,w_2)$ let
+\[
+  \Delta_x(u,w)=\max(0,u_1,w_1)-\min(0,u_1,w_1),\qquad
+  \Delta_y(u,w)=\max(0,u_2,w_2)-\min(0,u_2,w_2)
+\]
+be the width and height of the smallest box containing $0$, $u$ and $w$, and write
+$t_+=\max(t,0)$.
+
+\begin{proposition}\label{prop:exact}
+For every $n\ge1$,
+\begin{equation}\label{eq:Iexact}
+  I_n=\frac12\sum_{\substack{u,w\in\mathbb{Z}^2\setminus\{0\}\\
+      |u|^2=|w|^2,\ w\ne\pm u}}
+  \bigl(n-\Delta_x(u,w)\bigr)_+\bigl(n-\Delta_y(u,w)\bigr)_+ .
+\end{equation}
+\end{proposition}
+\begin{proof}
+Assign to an isosceles triangle with apex $A$ and other vertices $B,C$ the legs
+$u=B-A$ and $w=C-A$; then $|u|=|w|$, and since $B\ne C$ and the triangle is not
+degenerate, $w\ne\pm u$. Conversely, a pair $(u,w)$ with $|u|=|w|$ and $w\ne\pm u$
+together with a point $A$ such that $A$, $A+u$ and $A+w$ lie in $\G_n$ gives an
+isosceles triangle with apex $A$. The number of such $A$ is
+$(n-\Delta_x)_+(n-\Delta_y)_+$. By Lemma~2 of the $10\times10$ note the apex is
+unique, so each triangle arises from exactly the two ordered pairs $(u,w)$ and
+$(w,u)$, which explains the factor $\tfrac12$.
+\end{proof}
+
+The sum is finite (only $|u_i|,|w_i|\le n-1$ contribute). Evaluating
+\eqref{eq:Iexact} by computer reproduces the counts of \texttt{core/exact.py},
+e.g.\ $I_{10}=11\,284$, $I_{13}=36\,812$ and $I_{20}=248\,292$.
+
+Grouping the terms by the common squared length $k=|u|^2=|w|^2$ shows where the
+arithmetic enters. The circle $|v|^2=k$ carries
+\[
+  r_2(k)=\#\{v\in\mathbb{Z}^2 : |v|^2=k\}=4\sum_{d\mid k}\chi(d)
+\]
+lattice points, where $\chi(d)=0,1,-1$ for $d$ even, $d\equiv1$ and $d\equiv3
+\pmod4$ respectively. So the circle contributes $r_2(k)^2-2r_2(k)$ ordered pairs
+$(u,w)$ to \eqref{eq:Iexact}. Since $r_2(k)$ jumps irregularly ($r_2(3)=0$,
+$r_2(25)=12$, $r_2(325)=24$), no polynomial in $n$ can reproduce $I_n$.
+
+\subsection{The asymptotic formula}
+
+Put $h(x,y)=(1-\Delta_x(x,y))_+(1-\Delta_y(x,y))_+$ for real vectors $x,y$, so that
+the summand in \eqref{eq:Iexact} is $n^2h(u/n,w/n)$. For $s>0$ let
+\[
+  H(s)=\frac1{4\pi^2}\int_0^{2\pi}\!\!\int_0^{2\pi}
+  h\bigl(\sqrt s\,e^{i\theta},\sqrt s\,e^{i\varphi}\bigr)\,d\theta\,d\varphi
+\]
+be the average of $h$ over two independent uniformly random points on the circle
+of squared radius $s$, and
+\[
+  K=\int_0^\infty H(s)\,ds .
+\]
+
+\paragraph{Derivation.} Two ingredients are needed:
+\begin{enumerate}
+  \item (Ramanujan) $\displaystyle\sum_{k\le X}r_2(k)^2=4X\ln X+O(X)$, while
+    $\sum_{k\le X}r_2(k)=\pi X+O(\sqrt X)$, so the excluded pairs $w=\pm u$ are of
+    lower order.
+  \item (Equidistribution) On average over $k$, the pairs $(u,w)$ on the circle
+    $|v|^2=k$ are spread uniformly in angle, so that
+    $\sum_{u,w:\,|u|^2=|w|^2=k}h(u/n,w/n)\approx r_2(k)^2H(k/n^2)$.
+\end{enumerate}
+With these,
+\[
+  I_n\approx\frac{n^2}{2}\sum_k r_2(k)^2H\!\Bigl(\frac k{n^2}\Bigr)
+  \approx\frac{n^2}{2}\int_0^\infty H\!\Bigl(\frac x{n^2}\Bigr)\,4\ln x\,dx
+  =2n^4\int_0^\infty H(s)\ln(n^2s)\,ds
+  =4K\,n^4\ln n+O(n^4).
+\]
+Since $T_n-L_n=\tfrac16n^6\bigl(1+O(n^{-2}\ln n)\bigr)$, this gives
+\begin{equation}\label{eq:asym}
+  p_n=\frac{I_n}{T_n-L_n}=24K\,\frac{\ln n}{n^2}+O\!\Bigl(\frac1{n^2}\Bigr).
+\end{equation}
+The logarithm comes from $\sum r_2(k)^2$, i.e.\ from the circles that carry
+unusually many lattice points. This is the same phenomenon as the large-gcd bases
+in the heuristic of the previous section, seen from the apex instead of the base.
+Ingredient~2 is a standard equidistribution property of lattice points on circles,
+but we have not written out a rigorous proof that it holds with the required
+uniformity. Formula~\eqref{eq:asym} should therefore be read as a derivation that
+is confirmed numerically below, not as a theorem.
+
+\subsection{Computing the constant $K$}
+
+Fix the two angles and put $X=\Delta_x(e^{i\theta},e^{i\varphi})$,
+$Y=\Delta_y(e^{i\theta},e^{i\varphi})$, $m=\max(X,Y)$, $m'=\min(X,Y)$. Since
+$\Delta_x$ and $\Delta_y$ scale linearly, with $s=\rho^2$,
+\[
+  \int_0^\infty(1-\rho X)_+(1-\rho Y)_+\,ds
+  =\int_0^{1/m}2\rho(1-\rho X)(1-\rho Y)\,d\rho
+  =\frac{2m-m'}{6m^3},
+\]
+so
+\[
+  K=\frac1{4\pi^2}\int_0^{2\pi}\!\!\int_0^{2\pi}\frac{2m-m'}{6m^3}\,d\theta\,d\varphi .
+\]
+The integrand is piecewise smooth: $X$ and $Y$ change formula where
+$\cos\varphi=0,\pm\cos\theta$ and $\sin\varphi=0,\pm\sin\theta$, and $m$ switches
+where $X=Y$. All these curves have explicit equations, for instance
+$\sin\psi-\cos\psi=\cos\theta-\sin\theta$ in the third quadrant. Using the $8$
+symmetries of the square to restrict $\theta$ to $[0,\pi/4]$ (with an extra split
+at $\theta=\arctan\frac12$, where two of these curves cross), and integrating each
+smooth piece with tanh--sinh quadrature at $65$ significant digits, gives
+\[
+  K=0.15437283133963621670017405100056575958251198991906536509483148\ldots
+\]
+The integer-relation algorithm PSLQ, run against $1,\pi,\sqrt2,\ln2,\ln(1+\sqrt2)$ and
+other natural constants, then finds the relation $6\pi^2K=6+\pi$, which holds to
+within $10^{-64}$. Hence
+\[
+  K=\frac{6+\pi}{6\pi^2},\qquad 4K=\frac{2(6+\pi)}{3\pi^2}\approx0.6175,\qquad
+  24K=\frac{24}{\pi^2}+\frac4\pi\approx3.70495 .
+\]
+(The value is identified to $64$ digits, but we have not evaluated the piecewise
+integral symbolically.) A Monte Carlo estimate of the same integral,
+$K\approx0.1544\pm0.0002$, is consistent with this value.
+
+\begin{theorem*}[asymptotic law, under ingredient 2]
+\[
+  p_n\sim\Bigl(\frac{24}{\pi^2}+\frac4\pi\Bigr)\frac{\ln n}{n^2}
+  \approx3.705\,\frac{\ln n}{n^2},
+  \qquad
+  I_n\sim\frac{2(6+\pi)}{3\pi^2}\,n^4\ln n .
+\]
+\end{theorem*}
+
+\subsection{Comparison with the exact values}
+
+Table~\ref{tab:asym} compares the asymptotic law with the exact $p_n$ computed by
+\texttt{core/exact.py} up to $n=150$. Write $A=24/\pi^2+4/\pi$. The column ``local
+slope'' is $\bigl(n^2p_n-n'^2p_{n'}\bigr)/\ln(n/n')$ between consecutive rows. It
+climbs from $3.32$ towards $A=3.705$, which explains why the fit in the previous
+section, made over small grids, gave the smaller slope $3.51$. The gap
+$n^2p_n-A\ln n$ settles at a constant: fitting $B+c/n$ to the rows with $n\ge40$
+gives $B\approx-1.79$. The resulting two-term approximation
+\[
+  p_n\approx\frac{A\ln n+B}{n^2},\qquad A=\frac{24}{\pi^2}+\frac4\pi,\quad
+  B\approx-1.79,
+\]
+is within $2\%$ of the exact value already for $n=20$ and within $1\%$ from
+$n=30$ on. The leading term alone overestimates $p_n$ by about $10\%$ even at
+$n=150$, because $\ln n$ grows so slowly.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrrrrr}
+\toprule
+$n$ & $I_n$ & $p_n$ (exact) & $n^2p_n$ & local slope & $n^2p_n-A\ln n$ &
+$A\ln n/n^2$ & $(A\ln n+B)/n^2$ \\
+\midrule
+10 & 11\,284 & 0.0717574 & 7.176 & --- & $-1.355$ & 0.0853096 & 0.0674096 \\
+20 & 248\,292 & 0.0236872 & 9.475 & 3.317 & $-1.624$ & 0.0277476 & 0.0232726 \\
+30 & 1\,460\,408 & 0.0121231 & 10.911 & 3.541 & $-1.690$ & 0.0140014 & 0.0120125 \\
+40 & 5\,071\,344 & 0.0074670 & 11.947 & 3.602 & $-1.720$ & 0.0085419 & 0.0074232 \\
+60 & 28\,925\,132 & 0.0037291 & 13.425 & 3.644 & $-1.745$ & 0.0042137 & 0.0037165 \\
+80 & 98\,698\,384 & 0.0022624 & 14.479 & 3.666 & $-1.756$ & 0.0025367 & 0.0022571 \\
+100 & 254\,780\,204 & 0.0015302 & 15.302 & 3.687 & $-1.760$ & 0.0017062 & 0.0015272 \\
+150 & 1\,416\,699\,480 & 0.0007466 & 16.798 & 3.691 & $-1.766$ & 0.0008251 & 0.0007455 \\
+\bottomrule
+\end{tabular}
+\caption{Exact probabilities against the asymptotic law, with
+$A=24/\pi^2+4/\pi\approx3.70495$ and $B=-1.79$.}
+\label{tab:asym}
+\end{table}
+
+\section{Comparison with the simulations}
+
+The Monte Carlo experiment (\texttt{grid\_size\_experiment.py}, results in
+\texttt{results/grid\_size\_comparison.csv}) used the same rules for all grids:
+$10^4$ independent games of $10^6$ rounds, collinear draws redrawn.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+ & $10\times10$ & $20\times20$ & $30\times30$ \\
+\midrule
+exact $p_n$ & $0.0717574$ & $0.0236872$ & $0.0121231$ \\
+mean of the $10^4$ game estimates & $0.0717576$ & $0.0236892$ & $0.0121232$ \\
+standard error of that mean & $2.5\times10^{-6}$ & $1.5\times10^{-6}$ &
+  $1.1\times10^{-6}$ \\
+deviation in standard errors ($z$) & $0.06$ & $1.29$ & $0.11$ \\
+std.\ across games (observed) & $2.54\times10^{-4}$ & $1.53\times10^{-4}$ &
+  $1.10\times10^{-4}$ \\
+std.\ across games (binomial theory) & $2.58\times10^{-4}$ & $1.52\times10^{-4}$ &
+  $1.09\times10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+All three simulated means lie within $1.3$ standard errors of the exact values,
+and the spread across games matches the binomial prediction
+$\sqrt{p_n(1-p_n)/10^6}$ in each case.
+
+\paragraph{Independent check.} Enumerating all $10\,586\,800$ triples of the
+$20\times20$ grid and all $121\,095\,300$ triples of the $30\times30$ grid, and
+classifying each with exact integer arithmetic, gives the same counts
+$L_{20}=104\,676$, $I_{20}=248\,292$, $L_{30}=630\,684$ and $I_{30}=1\,460\,408$.
+The values above can be reproduced with
+\texttt{core.exact.exact\_isosceles\_probability(n, n)}.
+
+\appendix
+
+\section{Apex classes of the $20\times20$ grid}\label{app:20}
+
+For each representative $(x,y)$ with $0\le x\le y\le9$: $S_A$, $M_A$ and the number
+$S_A-M_A$ of isosceles triangles with apex $A$. Classes with $x=y$ have $4$
+elements, the others $8$. Weighted by orbit size the columns sum to
+$S_{20}=268\,092$, $M_{20}=19\,800$ and $I_{20}=248\,292$.
+
+\begin{center}
+\small
+\begin{tabular}{crrr@{\quad}crrr@{\quad}crrr}
+\toprule
+$(x,y)$ & $S_A$ & $M_A$ & $I_A$ & $(x,y)$ & $S_A$ & $M_A$ & $I_A$ &
+$(x,y)$ & $S_A$ & $M_A$ & $I_A$\\
+\midrule
+$(0,0)$ & 308 & 0 & 308 & $(2,2)$ & 470 & 12 & 458 & $(4,8)$ & 807 & 76 & 731 \\
+$(0,1)$ & 330 & 1 & 329 & $(2,3)$ & 490 & 17 & 473 & $(4,9)$ & 831 & 85 & 746 \\
+$(0,2)$ & 352 & 2 & 350 & $(2,4)$ & 515 & 22 & 493 & $(5,5)$ & 807 & 60 & 747 \\
+$(0,3)$ & 367 & 3 & 364 & $(2,5)$ & 550 & 27 & 523 & $(5,6)$ & 834 & 71 & 763 \\
+$(0,4)$ & 390 & 4 & 386 & $(2,6)$ & 574 & 32 & 542 & $(5,7)$ & 875 & 82 & 793 \\
+$(0,5)$ & 417 & 5 & 412 & $(2,7)$ & 600 & 37 & 563 & $(5,8)$ & 916 & 93 & 823 \\
+$(0,6)$ & 435 & 6 & 429 & $(2,8)$ & 632 & 42 & 590 & $(5,9)$ & 937 & 104 & 833 \\
+$(0,7)$ & 453 & 7 & 446 & $(2,9)$ & 651 & 47 & 604 & $(6,6)$ & 916 & 84 & 832 \\
+$(0,8)$ & 477 & 8 & 469 & $(3,3)$ & 557 & 24 & 533 & $(6,7)$ & 965 & 97 & 868 \\
+$(0,9)$ & 489 & 9 & 480 & $(3,4)$ & 584 & 31 & 553 & $(6,8)$ & 1010 & 110 & 900 \\
+$(1,1)$ & 391 & 4 & 387 & $(3,5)$ & 625 & 38 & 587 & $(6,9)$ & 1039 & 123 & 916 \\
+$(1,2)$ & 409 & 7 & 402 & $(3,6)$ & 648 & 45 & 603 & $(7,7)$ & 1073 & 112 & 961 \\
+$(1,3)$ & 425 & 10 & 415 & $(3,7)$ & 678 & 52 & 626 & $(7,8)$ & 1124 & 127 & 997 \\
+$(1,4)$ & 452 & 13 & 439 & $(3,8)$ & 711 & 59 & 652 & $(7,9)$ & 1163 & 142 & 1021 \\
+$(1,5)$ & 482 & 16 & 466 & $(3,9)$ & 731 & 66 & 665 & $(8,8)$ & 1238 & 144 & 1094 \\
+$(1,6)$ & 504 & 19 & 485 & $(4,4)$ & 662 & 40 & 622 & $(8,9)$ & 1277 & 161 & 1116 \\
+$(1,7)$ & 527 & 22 & 505 & $(4,5)$ & 707 & 49 & 658 & $(9,9)$ & 1379 & 180 & 1199 \\
+$(1,8)$ & 555 & 25 & 530 & $(4,6)$ & 734 & 58 & 676 & & & & \\
+$(1,9)$ & 571 & 28 & 543 & $(4,7)$ & 768 & 67 & 701 & & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\section{Apex classes of the $30\times30$ grid}\label{app:30}
+
+Same layout, representatives $0\le x\le y\le14$. Weighted by orbit size the
+columns sum to $S_{30}=1\,561\,208$, $M_{30}=100\,800$ and $I_{30}=1\,460\,408$.
+
+\begin{center}
+\small
+\begin{tabular}{crrr@{\quad}crrr@{\quad}crrr}
+\toprule
+$(x,y)$ & $S_A$ & $M_A$ & $I_A$ & $(x,y)$ & $S_A$ & $M_A$ & $I_A$ &
+$(x,y)$ & $S_A$ & $M_A$ & $I_A$\\
+\midrule
+$(0,0)$ & 783 & 0 & 783 & $(2,13)$ & 1489 & 67 & 1422 & $(6,11)$ & 1977 & 149 & 1828 \\
+$(0,1)$ & 815 & 1 & 814 & $(2,14)$ & 1521 & 72 & 1449 & $(6,12)$ & 2017 & 162 & 1855 \\
+$(0,2)$ & 855 & 2 & 853 & $(3,3)$ & 1182 & 24 & 1158 & $(6,13)$ & 2070 & 175 & 1895 \\
+$(0,3)$ & 890 & 3 & 887 & $(3,4)$ & 1219 & 31 & 1188 & $(6,14)$ & 2118 & 188 & 1930 \\
+$(0,4)$ & 921 & 4 & 917 & $(3,5)$ & 1265 & 38 & 1227 & $(7,7)$ & 1874 & 112 & 1762 \\
+$(0,5)$ & 957 & 5 & 952 & $(3,6)$ & 1306 & 45 & 1261 & $(7,8)$ & 1943 & 127 & 1816 \\
+$(0,6)$ & 993 & 6 & 987 & $(3,7)$ & 1352 & 52 & 1300 & $(7,9)$ & 2016 & 142 & 1874 \\
+$(0,7)$ & 1027 & 7 & 1020 & $(3,8)$ & 1400 & 59 & 1341 & $(7,10)$ & 2075 & 157 & 1918 \\
+$(0,8)$ & 1066 & 8 & 1058 & $(3,9)$ & 1451 & 66 & 1385 & $(7,11)$ & 2146 & 172 & 1974 \\
+$(0,9)$ & 1103 & 9 & 1094 & $(3,10)$ & 1500 & 73 & 1427 & $(7,12)$ & 2188 & 187 & 2001 \\
+$(0,10)$ & 1139 & 10 & 1129 & $(3,11)$ & 1549 & 80 & 1469 & $(7,13)$ & 2246 & 202 & 2044 \\
+$(0,11)$ & 1176 & 11 & 1165 & $(3,12)$ & 1583 & 87 & 1496 & $(7,14)$ & 2296 & 217 & 2079 \\
+$(0,12)$ & 1206 & 12 & 1194 & $(3,13)$ & 1623 & 94 & 1529 & $(8,8)$ & 2099 & 144 & 1955 \\
+$(0,13)$ & 1238 & 13 & 1225 & $(3,14)$ & 1657 & 101 & 1556 & $(8,9)$ & 2176 & 161 & 2015 \\
+$(0,14)$ & 1263 & 14 & 1249 & $(4,4)$ & 1327 & 40 & 1287 & $(8,10)$ & 2237 & 178 & 2059 \\
+$(1,1)$ & 906 & 4 & 902 & $(4,5)$ & 1378 & 49 & 1329 & $(8,11)$ & 2310 & 195 & 2115 \\
+$(1,2)$ & 943 & 7 & 936 & $(4,6)$ & 1422 & 58 & 1364 & $(8,12)$ & 2362 & 212 & 2150 \\
+$(1,3)$ & 977 & 10 & 967 & $(4,7)$ & 1472 & 67 & 1405 & $(8,13)$ & 2425 & 229 & 2196 \\
+$(1,4)$ & 1014 & 13 & 1001 & $(4,8)$ & 1528 & 76 & 1452 & $(8,14)$ & 2473 & 246 & 2227 \\
+$(1,5)$ & 1056 & 16 & 1040 & $(4,9)$ & 1581 & 85 & 1496 & $(9,9)$ & 2340 & 180 & 2160 \\
+$(1,6)$ & 1095 & 19 & 1076 & $(4,10)$ & 1629 & 94 & 1535 & $(9,10)$ & 2401 & 199 & 2202 \\
+$(1,7)$ & 1133 & 22 & 1111 & $(4,11)$ & 1682 & 103 & 1579 & $(9,11)$ & 2480 & 218 & 2262 \\
+$(1,8)$ & 1178 & 25 & 1153 & $(4,12)$ & 1718 & 112 & 1606 & $(9,12)$ & 2540 & 237 & 2303 \\
+$(1,9)$ & 1218 & 28 & 1190 & $(4,13)$ & 1761 & 121 & 1640 & $(9,13)$ & 2607 & 256 & 2351 \\
+$(1,10)$ & 1258 & 31 & 1227 & $(4,14)$ & 1795 & 130 & 1665 & $(9,14)$ & 2657 & 275 & 2382 \\
+$(1,11)$ & 1300 & 34 & 1266 & $(5,5)$ & 1500 & 60 & 1440 & $(10,10)$ & 2561 & 220 & 2341 \\
+$(1,12)$ & 1329 & 37 & 1292 & $(5,6)$ & 1547 & 71 & 1476 & $(10,11)$ & 2654 & 241 & 2413 \\
+$(1,13)$ & 1362 & 40 & 1322 & $(5,7)$ & 1607 & 82 & 1525 & $(10,12)$ & 2713 & 262 & 2451 \\
+$(1,14)$ & 1391 & 43 & 1348 & $(5,8)$ & 1664 & 93 & 1571 & $(10,13)$ & 2778 & 283 & 2495 \\
+$(2,2)$ & 1043 & 12 & 1031 & $(5,9)$ & 1720 & 104 & 1616 & $(10,14)$ & 2843 & 304 & 2539 \\
+$(2,3)$ & 1079 & 17 & 1062 & $(5,10)$ & 1770 & 115 & 1655 & $(11,11)$ & 2838 & 264 & 2574 \\
+$(2,4)$ & 1116 & 22 & 1094 & $(5,11)$ & 1830 & 126 & 1704 & $(11,12)$ & 2903 & 287 & 2616 \\
+$(2,5)$ & 1159 & 27 & 1132 & $(5,12)$ & 1870 & 137 & 1733 & $(11,13)$ & 2980 & 310 & 2670 \\
+$(2,6)$ & 1199 & 32 & 1167 & $(5,13)$ & 1922 & 148 & 1774 & $(11,14)$ & 3049 & 333 & 2716 \\
+$(2,7)$ & 1240 & 37 & 1203 & $(5,14)$ & 1960 & 159 & 1801 & $(12,12)$ & 3067 & 312 & 2755 \\
+$(2,8)$ & 1287 & 42 & 1245 & $(6,6)$ & 1673 & 84 & 1589 & $(12,13)$ & 3152 & 337 & 2815 \\
+$(2,9)$ & 1330 & 47 & 1283 & $(6,7)$ & 1735 & 97 & 1638 & $(12,14)$ & 3217 & 362 & 2855 \\
+$(2,10)$ & 1377 & 52 & 1325 & $(6,8)$ & 1794 & 110 & 1684 & $(13,13)$ & 3332 & 364 & 2968 \\
+$(2,11)$ & 1423 & 57 & 1366 & $(6,9)$ & 1859 & 123 & 1736 & $(13,14)$ & 3407 & 391 & 3016 \\
+$(2,12)$ & 1452 & 62 & 1390 & $(6,10)$ & 1916 & 136 & 1780 & $(14,14)$ & 3585 & 420 & 3165 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
