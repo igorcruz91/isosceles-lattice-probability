@@ -13,3 +13,6 @@
 4. Run `black .` and `flake8` before committing
 5. Update relevant documentation in `/docs` if adding new features
 
+
+## Session continuity
+- Read `PROGRESS.md` at the start of every session to recap what has been done and what is open; update it after significant work.
