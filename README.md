@@ -66,6 +66,7 @@ reruns the 10,000 games × 1,000,000 rounds Monte Carlo on 10x10, 20x20, 30x30 a
 ```bash
 python make_linkedin_gifs.py   # matplotlib version: isosceles_triangles_{clean,neon}.gif
 python make_manimgx_gif.py     # ManimGX version: isosceles_triangles_manimgx_{clean,neon}.{gif,mp4}
+python make_grid_comparison_gif.py  # 10x10 vs 20x20 vs 30x30: isosceles_grid_comparison_{clean,neon}.gif
 ```
 
 Both scripts use the same experiment (same seeds, same Monte Carlo cache), so the
