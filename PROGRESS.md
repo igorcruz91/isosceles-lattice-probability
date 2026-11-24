@@ -1,7 +1,7 @@
 # Progress log
 
 Read this first in a new session. It records what has been done, where every
-piece lives, and what is still open. Last updated: 2026-11-19.
+piece lives, and what is still open. Last updated: 2026-11-24.
 
 ## The question
 
@@ -111,6 +111,18 @@ M): I = S - M.
   - triangular lattice
   - taxicab distance
   - right or Heron triangles
+
+### 7. LinkedIn post: 10x10 vs 20x20 vs 30x30 (`analysis-grid-comparison-gif`)
+- `make_grid_comparison_gif.py` renders `isosceles_grid_comparison_{clean,neon}.gif`
+  (1200x750, 162 frames, 64-colour palette to stay under LinkedIn's 5 MB).
+  - Top row: one showcase game per grid (seeds 12 / 43 / 51; the 10x10 one is the
+    same game as the first GIF).
+  - Bottom left: the three running estimates with 95% bands.
+  - Bottom right: exact p_n for n = 6..40, the asymptotic law, and the live
+    estimates with error bars.
+  - Reuses frame schedule, styles and quantisation from `make_linkedin_gifs.py`.
+- `tests/test_grid_comparison_gif.py` has 9 tests (suite: 65 passing).
+- Post text: `docs/linkedin_post_grid_comparison.md`.
 
 ## Open items / possible next steps
 1. (Done) Visual explainer committed and merged.
